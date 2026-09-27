@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Viver Seguro | Apoio e Proteção contra o Cyberbullying</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        },
+                        danger: {
+                            500: '#ef4444',
+                            600: '#dc2626',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Font scale classes */
+        body.font-sm { font-size: 14px; }
+        body.font-md { font-size: 16px; }
+        body.font-lg { font-size: 18px; }
+        body.font-xl { font-size: 20px; }
+
+        /* High Contrast mode */
+        html.high-contrast {
+            filter: contrast(135%);
+        }
+        html.high-contrast body {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        html.high-contrast .bg-white, 
+        html.high-contrast .bg-slate-50,
+        html.high-contrast .bg-slate-900 {
+            background-color: #0d0d0d !important;
+            border-color: #ffffff !important;
+        }
+        html.high-contrast .text-slate-600,
+        html.high-contrast .text-slate-500,
+        html.high-contrast .text-slate-400 {
+            color: #e2e8f0 !important;
+        }
+
+        /* Print formatting */
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white !important; color: black !important; font-size: 12pt; }
+            .card-box { border: 1px solid #ccc !important; box-shadow: none !important; }
+        }
+        .print-only { display: none; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans font-md transition-colors duration-200 min-h-screen flex flex-col">
+
+    <!-- Top Emergency & Accessibility Bar -->
+    <div class="sticky top-0 z-50 bg-slate-900 text-white shadow-md no-print border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap justify-between items-center gap-2 text-xs sm:text-sm">
+            <!-- Fast Exit Button -->
+            <button onclick="quickExit()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-1.5 px-3 sm:px-4 rounded-lg flex items-center gap-2 transition-transform active:scale-95 shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400" title="Clique ou pressione ESC para sair do site imediatamente">
+                <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                <span>Saída Rápida <kbd class="hidden sm:inline bg-red-800 px-1.5 py-0.5 rounded text-[10px] font-mono">ESC</kbd></span>
+            </button>
+
+            <div class="flex items-center gap-3 ml-auto">
+                <!-- Acessibility Controls -->
+                <div class="flex items-center bg-slate-800 rounded-lg p-1 gap-1 border border-slate-700">
+                    <span class="text-xs text-slate-400 px-1 hidden md:inline">Texto:</span>
+                    <button onclick="changeFontSize(-1)" class="px-2 py-0.5 rounded hover:bg-slate-700 font-bold" title="Diminuir fonte">A-</button>
+                    <button onclick="resetFontSize()" class="px-2 py-0.5 rounded hover:bg-slate-700 font-semibold" title="Tamanho normal">A</button>
+                    <button onclick="changeFontSize(1)" class="px-2 py-0.5 rounded hover:bg-slate-700 font-bold" title="Aumentar fonte">A+</button>
+                </div>
+
+                <button onclick="toggleHighContrast()" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-700 flex items-center gap-1 text-xs" title="Alternar Alto Contraste">
+                    <i data-lucide="eye" class="w-4 h-4 text-amber-400"></i>
+                    <span class="hidden sm:inline">Contraste</span>
+                </button>
+
+                <button onclick="toggleDarkMode()" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-700 flex items-center gap-1 text-xs" title="Alternar Modo Escuro">
+                    <i data-lucide="moon" id="themeIcon" class="w-4 h-4 text-indigo-400"></i>
+                    <span class="hidden sm:inline" id="themeText">Tema</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md sticky top-[45px] z-40 border-b border-slate-200 dark:border-slate-800 no-print transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <a href="#" class="flex items-center gap-2.5 font-display font-extrabold text-xl text-brand-600 dark:text-brand-500">
+                <div class="p-2 bg-brand-50 dark:bg-brand-950/80 rounded-xl text-brand-600 dark:text-brand-400">
+                    <i data-lucide="shield-check" class="w-6 h-6"></i>
+                </div>
+                <span>Viver Seguro</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden lg:flex items-center gap-6 font-medium text-sm text-slate-600 dark:text-slate-300">
+                <a href="#autoteste" class="hover:text-brand-600 dark:hover:text-brand-400 transition">Diagnóstico</a>
+                <a href="#provas" class="hover:text-brand-600 dark:hover:text-brand-400 transition">Registro de Provas</a>
+                <a href="#identificar" class="hover:text-brand-600 dark:hover:text-brand-400 transition">Tipos de Ataque</a>
+                <a href="#reportar" class="hover:text-brand-600 dark:hover:text-brand-400 transition">Como Reportar</a>
+                <a href="#ajudar" class="hover:text-brand-600 dark:hover:text-brand-400 transition">Guia do Aliado</a>
+                <a href="#emergencia" class="px-3 py-1.5 bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 rounded-full font-semibold border border-brand-200 dark:border-brand-800 hover:bg-brand-100 dark:hover:bg-brand-900 transition flex items-center gap-1.5">
+                    <i data-lucide="phone-call" class="w-3.5 h-3.5"></i>
+                    <span>Canais de Ajuda</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-b from-brand-50/70 via-slate-50 to-slate-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-950 py-12 sm:py-16 no-print border-b border-slate-200/60 dark:border-slate-800/60">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-brand-100 dark:bg-brand-950 text-brand-700 dark:text-brand-300 border border-brand-200 dark:border-brand-800">
+                <i data-lucide="heart-handshake" class="w-3.5 h-3.5"></i> Espaço de Acolhimento, Segurança e Ação
+            </span>
+            <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
+                Você não está só.<br class="hidden sm:inline"> Proteção, clareza e apoio a cada passo.
+            </h1>
+            <p class="max-w-2xl mx-auto text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+                Um portal instrucional completo para identificar situações de cyberbullying, registrar provas de forma segura, reportar às autoridades e ajudar quem precisa.
+            </p>
+
+            <!-- Search Bar -->
+            <div class="max-w-xl mx-auto relative pt-2">
+                <div class="relative">
+                    <input type="text" id="searchInput" onkeyup="filterContent()" placeholder="Busque por 'vazamento', 'WhatsApp', 'provas', 'escola'..." class="w-full pl-11 pr-4 py-3.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl shadow-lg focus:ring-2 focus:ring-brand-500 focus:outline-none dark:text-white text-sm sm:text-base">
+                    <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-4 top-4"></i>
+                </div>
+                <div id="searchResultsCount" class="hidden text-xs text-slate-500 dark:text-slate-400 mt-2 text-left px-2"></div>
+            </div>
+
+            <!-- Quick Jump Badges -->
+            <div class="flex flex-wrap justify-center gap-2 pt-3">
+                <a href="#autoteste" class="px-3.5 py-1.5 bg-white dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 rounded-full text-xs font-medium shadow-sm transition flex items-center gap-1.5">
+                    <i data-lucide="clipboard-check" class="w-3.5 h-3.5 text-brand-500"></i> Autoteste Rápido
+                </a>
+                <a href="#provas" class="px-3.5 py-1.5 bg-white dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 rounded-full text-xs font-medium shadow-sm transition flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5 text-indigo-500"></i> Dossiê de Provas
+                </a>
+                <a href="#reportar" class="px-3.5 py-1.5 bg-white dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 rounded-full text-xs font-medium shadow-sm transition flex items-center gap-1.5">
+                    <i data-lucide="shield" class="w-3.5 h-3.5 text-emerald-500"></i> Como Reportar
+                </a>
+                <a href="#ajudar" class="px-3.5 py-1.5 bg-white dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 rounded-full text-xs font-medium shadow-sm transition flex items-center gap-1.5">
+                    <i data-lucide="users" class="w-3.5 h-3.5 text-amber-500"></i> Guia para Aliados
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+
+        <!-- TOOL 1: CHECK-UP DE SEGURANÇA DIGITAL (AUTOTESTE) -->
+        <section id="autoteste" class="searchable scroll-mt-24">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-brand-500/5 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+                
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Ferramenta Interativa 1</span>
+                        <h2 class="font-display text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white flex items-center gap-2 mt-1">
+                            <i data-lucide="activity" class="w-7 h-7 text-brand-600"></i>
+                            Check-up de Segurança Digital
+                        </h2>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm mt-1">
+                            Responda a 5 perguntas rápidas para entender a gravidade da situação e receber orientações personalizadas.
+                        </p>
+                    </div>
+                    <button onclick="resetQuiz()" class="text-xs text-slate-500 hover:text-brand-600 dark:hover:text-brand-400 flex items-center gap-1 self-start md:self-auto">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reiniciar teste
+                    </button>
+                </div>
+
+                <!-- Quiz Questions Form -->
+                <div id="quizForm" class="space-y-6">
+                    <!-- Q1 -->
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/80 space-y-3">
+                        <label class="font-semibold text-slate-900 dark:text-slate-100 text-sm block">
+                            1. Com que frequência as mensagens ou atitudes hostis ocorrem?
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <label class="p-3 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl flex items-center gap-2 cursor-pointer hover:border-brand-500 text-xs sm:text-sm">
+                                <input type="radio" name="q1" value="1" class="text-brand-600 focus:ring-brand-500">
+                                <span>Foi um fato isolado (1 vez)</span>
+                            </label>
+                            <label class="p-3 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl flex items-center gap-2 cursor-pointer hover:border-brand-500 text-xs sm:text-sm">
+                                <input type="radio" name="q1" value="2" class="text-brand-600 focus:ring-brand-500">
+                                <span>Algumas vezes no mês</span>
+                            </label>
+                            <label class="p-3 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl flex items-center gap-2 cursor-pointer hover:border-brand-500 text-xs sm:text-sm">
+                                <input type="radio" name="q1" value="3" class="text-brand-600 focus:ring-brand-500">
+                                <span>Diariamente / Repetidamente</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/80 space-y-3">
+                        <label class="font-semibold text-slate-900 dark:text-slate-100 text-sm block">
+                            2. Qual é a visibilidade do ataque?
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <label class="p-3 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl flex items-center gap-2 cursor-pointer hover:border-brand-500 text-xs sm:text-sm">
+                                <input type="radio" name="q2" value="1" class="text-brand-600 focus:ring-brand-500">
+                                <span>Mensagem privada direta</span>
+                            </label>
+                            <label class="p-3 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl flex items-center gap-2 cursor-pointer hover:border-brand-500 text-xs sm:text-sm">
+                                <input type="radio" name="q2" value="2" class="text-brand-600 focus:ring-brand-500">
+                                <span>Grupo de amigos / turma</span>
+                            </label>
+                            <label class="p-3 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl flex items-center gap-2 cursor-pointer hover:border-brand-500 text-xs sm:text-sm">
+                                <input type="radio" name="q2" value="3" class="text-brand-600 focus:ring-brand-500">
+                                <span>Público / exposed / fóruns</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/80 space-y-3">
+                        <label class="font-semibold text-slate-900 dark:text-slate-100 text-sm block">
+                            3. Qual o teor do conteúdo direcionado?
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <label class="p-3 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl flex items-center gap-2 cursor-pointer hover:border-brand-500 text-xs sm:text-sm">
+                                <input type="radio" name="q3" value="1" class="text-brand-600 focus:ring-brand-500">
+                                <span>Discordância ou briga simples</span>
+                            </label>
+                            <label class="p-3 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl flex items-center gap-2 cursor-pointer hover:border-brand-500 text-xs sm:text-sm">
+                                <input type="radio" name="q3" value="2" class="text-brand-600 focus:ring-brand-500">
+                                <span>Piadas maldosas ou apelidos</span>
+                            </label>
+                            <label class="p-3 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl flex items-center gap-2 cursor-pointer hover:border-brand-500 text-xs sm:text-sm">
+                                <input type="radio" name="q3" value="3" class="text-brand-600 focus:ring-brand-500">
+                                <span>Ameaças, vazamento ou ódio</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/80 space-y-3">
+                        <label class="font-semibold text-slate-900 dark:text-slate-100 text-sm block">
+                            4. Quantas pessoas participam das ofensas?
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <label class="p-3 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl flex items-center gap-2 cursor-pointer hover:border-brand-500 text-xs sm:text-sm">
+                                <input type="radio" name="q4" value="1" class="text-brand-600 focus:ring-brand-500">
+                                <span>Apenas 1 pessoa</span>
+                            </label>
+                            <label class="p-3 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl flex items-center gap-2 cursor-pointer hover:border-brand-500 text-xs sm:text-sm">
+                                <input type="radio" name="q4" value="2" class="text-brand-600 focus:ring-brand-500">
+                                <span>Pequeno grupo (2 a 4)</span>
+                            </label>
+                            <label class="p-3 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl flex items-center gap-2 cursor-pointer hover:border-brand-500 text-xs sm:text-sm">
+                                <input type="radio" name="q4" value="3" class="text-brand-600 focus:ring-brand-500">
+                                <span>Multidão / Fakes organizados</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/80 space-y-3">
+                        <label class="font-semibold text-slate-900 dark:text-slate-100 text-sm block">
+                            5. Como essa situação afeta o bem-estar psicológico?
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <label class="p-3 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl flex items-center gap-2 cursor-pointer hover:border-brand-500 text-xs sm:text-sm">
+                                <input type="radio" name="q5" value="1" class="text-brand-600 focus:ring-brand-500">
+                                <span>Desconforto pontual</span>
+                            </label>
+                            <label class="p-3 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl flex items-center gap-2 cursor-pointer hover:border-brand-500 text-xs sm:text-sm">
+                                <input type="radio" name="q5" value="2" class="text-brand-600 focus:ring-brand-500">
+                                <span>Ansiedade e receio da internet</span>
+                            </label>
+                            <label class="p-3 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl flex items-center gap-2 cursor-pointer hover:border-brand-500 text-xs sm:text-sm">
+                                <input type="radio" name="q5" value="3" class="text-brand-600 focus:ring-brand-500">
+                                <span>Medo intenso, insônia ou pânico</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button onclick="calculateQuiz()" class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-2xl transition shadow-md flex items-center justify-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5"></i>
+                        <span>Calcular Resultado e Ver Recomendações</span>
+                    </button>
+                </div>
+
+                <!-- Quiz Results Panel (Hidden by default) -->
+                <div id="quizResult" class="hidden mt-6 p-6 rounded-2xl border transition-all duration-300">
+                    <div class="flex items-start gap-4">
+                        <div id="resultIconBox" class="p-3 rounded-xl text-white"></div>
+                        <div class="space-y-2 flex-grow">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <h3 id="resultTitle" class="font-display font-bold text-xl">---</h3>
+                                <span id="resultBadge" class="px-3 py-1 rounded-full text-xs font-bold">---</span>
+                            </div>
+                            <p id="resultDescription" class="text-sm leading-relaxed">---</p>
+                            
+                            <div class="pt-4 border-t border-slate-200/60 dark:border-slate-700/60 space-y-2">
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Plano de Ação Sugerido:</h4>
+                                <ul id="resultActionSteps" class="text-xs sm:text-sm space-y-1.5 list-disc list-inside"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOOL 2: GERADOR E ORGANIZADOR DE REGISTRO DE PROVAS -->
+        <section id="provas" class="searchable scroll-mt-24">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Ferramenta Interativa 2</span>
+                    <h2 class="font-display text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white flex items-center gap-2 mt-1">
+                        <i data-lucide="folder-lock" class="w-7 h-7 text-indigo-600"></i>
+                        Dossiê de Registro de Provas
+                    </h2>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm mt-1">
+                        Cadastre os incidentes com data, horário e links. Os dados ficam salvos <strong>apenas no seu dispositivo</strong> (privacidade total) e podem ser convertidos em um relatório oficial para escolas ou delegacias.
+                    </p>
+                </div>
+
+                <!-- Form -->
+                <form id="evidenceForm" onsubmit="addEvidence(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 p-5 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-200/80 dark:border-slate-700/80">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Plataforma / Rede Social *</label>
+                        <select id="evPlatform" required class="w-full p-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 dark:text-white">
+                            <option value="">Selecione...</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="TikTok">TikTok</option>
+                            <option value="Discord">Discord</option>
+                            <option value="Roblox">Roblox</option>
+                            <option value="X (Twitter)">X (Twitter)</option>
+                            <option value="Outra Plataforma">Outra Plataforma</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Data e Horário do Incidente *</label>
+                        <input type="datetime-local" id="evDateTime" required class="w-full p-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 dark:text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Perfil / Link do Agressor *</label>
+                        <input type="text" id="evAccount" placeholder="@usuario ou link do perfil" required class="w-full p-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 dark:text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Tipo de Prova Salva</label>
+                        <input type="text" id="evType" placeholder="Ex: Captura de tela (print), Gravação de áudio, Link direto" class="w-full p-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 dark:text-white">
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Descrição do Ocorrido / Texto da Mensagem *</label>
+                        <textarea id="evDescription" rows="3" placeholder="Descreva brevemente o conteúdo da ofensa, ameaça ou acusação..." required class="w-full p-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 dark:text-white"></textarea>
+                    </div>
+
+                    <div class="md:col-span-2 flex flex-wrap gap-2 justify-end pt-2">
+                        <button type="submit" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl transition flex items-center gap-2 shadow-sm">
+                            <i data-lucide="plus-circle" class="w-4 h-4"></i> Adicionar ao Dossiê
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Evidence List Display -->
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-semibold text-slate-900 dark:text-white text-sm flex items-center gap-2">
+                            <span>Registros Guardados:</span>
+                            <span id="evidenceCount" class="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-full text-xs font-bold">0</span>
+                        </h3>
+                        
+                        <div class="flex items-center gap-2">
+                            <button onclick="clearAllEvidence()" class="text-xs text-red-500 hover:text-red-600 font-medium px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-950/40">
+                                Limpar Registros
+                            </button>
+                            <button onclick="printEvidenceReport()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 text-xs font-bold rounded-lg transition flex items-center gap-1.5 shadow-sm">
+                                <i data-lucide="printer" class="w-3.5 h-3.5"></i> Gerar Relatório PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="evidenceList" class="space-y-3">
+                        <!-- Items rendered via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 1: COMO IDENTIFICAR (TIPOS DE ATAQUES) -->
+        <section id="identificar" class="searchable scroll-mt-24 space-y-6">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Módulo 1</span>
+                <h2 class="font-display text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1">
+                    Como Identificar: Tipos Frequentes de Cyberbullying
+                </h2>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mt-1">
+                    Reconhecer o tipo de ataque é o primeiro passo para saber quais medidas legais e técnicas aplicar.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card 1: Doxxing -->
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-3">
+                    <div class="w-10 h-10 bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 rounded-xl flex items-center justify-center font-bold">
+                        <i data-lucide="file-warning" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Doxxing (Vazamento)</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Publicação não autorizada de dados privados como endereço, telefone, fotos íntimas ou documentos pessoais para encorajar assédio generalizado.
+                    </p>
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-red-500 font-semibold flex items-center gap-1">
+                        <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> Gravidade Alta (Crime de Violação)
+                    </div>
+                </div>
+
+                <!-- Card 2: Cyberstalking -->
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-3">
+                    <div class="w-10 h-10 bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 rounded-xl flex items-center justify-center font-bold">
+                        <i data-lucide="footprints" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Stalking (Perseguição)</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Monitoramento obsessivo e persistente em várias redes sociais, envio compulsivo de mensagens não solicitadas e comentários intimidadoramente constantes.
+                    </p>
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-amber-600 dark:text-amber-400 font-semibold flex items-center gap-1">
+                        <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> Tipificado no Art. 147-A do CP
+                    </div>
+                </div>
+
+                <!-- Card 3: Impersonação / Perfil Fake -->
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-3">
+                    <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center font-bold">
+                        <i data-lucide="user-x" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Impersonação (Fakes)</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Criação de perfis falsos utilizando sua foto e nome para espalhar mentiras, enviar ofensas a terceiros ou destruir sua reputação.
+                    </p>
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-indigo-500 font-semibold flex items-center gap-1">
+                        <i data-lucide="info" class="w-3.5 h-3.5"></i> Falso Identidade (Falsa Representação)
+                    </div>
+                </div>
+
+                <!-- Card 4: Canceling / Linchamento Virtual -->
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-3">
+                    <div class="w-10 h-10 bg-purple-100 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 rounded-xl flex items-center justify-center font-bold">
+                        <i data-lucide="users-round" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Linchamento / Cancelamento</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Ataques massivos organizados em grupo para ridicularizar uma pessoa em postagens públicas, promovendo boicote social e mensagens de ódio.
+                    </p>
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-purple-500 font-semibold flex items-center gap-1">
+                        <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> Assédio Moral Coletivo
+                    </div>
+                </div>
+
+                <!-- Card 5: Exclusão Coletiva -->
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-3">
+                    <div class="w-10 h-10 bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center font-bold">
+                        <i data-lucide="user-minus" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Exclusão Social Dirigida</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Remover ou banir intencionalmente alguém de grupos da turma, salas de games ou comunidades online combinando de ignorar e isolar a vítima.
+                    </p>
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-blue-500 font-semibold flex items-center gap-1">
+                        <i data-lucide="info" class="w-3.5 h-3.5"></i> Violência Psicológica Pasiva
+                    </div>
+                </div>
+
+                <!-- Card 6: Chantagem e Extorsão -->
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-3">
+                    <div class="w-10 h-10 bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 rounded-xl flex items-center justify-center font-bold">
+                        <i data-lucide="key-round" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Sextorsão / Chantagem</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Ameaçar expor conversas íntimas, fotos ou segredos caso a pessoa não cumpra exigências (financeiras ou novos envios).
+                    </p>
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-rose-500 font-semibold flex items-center gap-1">
+                        <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> Crime Grave - Denuncie Imediatamente
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 2: COMO E PARA QUEM REPORTAR -->
+        <section id="reportar" class="searchable scroll-mt-24 space-y-8">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Módulo 2</span>
+                <h2 class="font-display text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1">
+                    Como e Para Quem Reportar
+                </h2>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mt-1">
+                    Passos práticos e diretos para denunciar na plataforma e acionar instâncias jurídicas no Brasil.
+                </p>
+            </div>
+
+            <!-- Pre-Block Interactive Checklist -->
+            <div class="bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 rounded-3xl p-6 space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-amber-500 text-white rounded-xl">
+                        <i data-lucide="check-square" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold text-slate-900 dark:text-white text-lg">Checklist Vital: O que fazer ANTES de bloquear</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-300">Marque os passos conforme executa para não perder nenhuma prova essencial:</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 text-xs sm:text-sm">
+                    <label class="flex items-start gap-3 p-3 bg-white dark:bg-slate-900 rounded-xl border border-amber-200/60 dark:border-amber-900/40 cursor-pointer">
+                        <input type="checkbox" onchange="updateChecklistProgress()" class="mt-0.5 rounded text-amber-600 focus:ring-amber-500 chk-step">
+                        <span><strong>Print completo:</strong> Guarde a tela inteira mostrando horário, data e nome de usuário visível.</span>
+                    </label>
+
+                    <label class="flex items-start gap-3 p-3 bg-white dark:bg-slate-900 rounded-xl border border-amber-200/60 dark:border-amber-900/40 cursor-pointer">
+                        <input type="checkbox" onchange="updateChecklistProgress()" class="mt-0.5 rounded text-amber-600 focus:ring-amber-500 chk-step">
+                        <span><strong>Copiar URL direto:</strong> Salve o link exato do perfil do agressor e da publicação.</span>
+                    </label>
+
+                    <label class="flex items-start gap-3 p-3 bg-white dark:bg-slate-900 rounded-xl border border-amber-200/60 dark:border-amber-900/40 cursor-pointer">
+                        <input type="checkbox" onchange="updateChecklistProgress()" class="mt-0.5 rounded text-amber-600 focus:ring-amber-500 chk-step">
+                        <span><strong>Exportar conversa:</strong> Se for WhatsApp/Discord, utilize a função de exportar chat com mídias.</span>
+                    </label>
+
+                    <label class="flex items-start gap-3 p-3 bg-white dark:bg-slate-900 rounded-xl border border-amber-200/60 dark:border-amber-900/40 cursor-pointer">
+                        <input type="checkbox" onchange="updateChecklistProgress()" class="mt-0.5 rounded text-amber-600 focus:ring-amber-500 chk-step">
+                        <span><strong>Registrar no Dossiê:</strong> Insira os detalhes na nossa ferramenta acima ou num documento impresso.</span>
+                    </label>
+                </div>
+
+                <div class="flex items-center gap-3 pt-1">
+                    <div class="w-full bg-amber-200 dark:bg-amber-900/60 h-2 rounded-full overflow-hidden">
+                        <div id="chkProgressBar" class="bg-amber-500 h-full w-0 transition-all duration-300"></div>
+                    </div>
+                    <span id="chkProgressText" class="text-xs font-bold text-amber-700 dark:text-amber-300 whitespace-nowrap">0% Concluído</span>
+                </div>
+            </div>
+
+            <!-- Platform Specific Tabs -->
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+                <h3 class="font-display font-bold text-slate-900 dark:text-white text-xl flex items-center gap-2">
+                    <i data-lucide="share-2" class="w-5 h-5 text-emerald-500"></i>
+                    Guia de Denúncia por Plataforma
+                </h3>
+
+                <!-- Tab Buttons -->
+                <div class="flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+                    <button onclick="switchTab('instagram')" id="tab-instagram" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-brand-600 text-white">Instagram</button>
+                    <button onclick="switchTab('whatsapp')" id="tab-whatsapp" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">WhatsApp</button>
+                    <button onclick="switchTab('tiktok')" id="tab-tiktok" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">TikTok</button>
+                    <button onclick="switchTab('discord')" id="tab-discord" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">Discord / Games</button>
+                    <button onclick="switchTab('twitter')" id="tab-twitter" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">X (Twitter)</button>
+                </div>
+
+                <!-- Tab Contents -->
+                <div id="tabContent" class="text-sm space-y-4">
+                    <!-- Dynamic JS Tab content rendered here -->
+                </div>
+            </div>
+
+            <!-- Legal Channels in Brazil -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+                    <div class="p-3 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-2xl w-fit">
+                        <i data-lucide="scale" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Ata Notarial & Verifact</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Para dar validade jurídica inquestionável aos prints de celular, você pode registrar uma <strong>Ata Notarial</strong> em Cartório ou usar plataformas de auditoria digital com validade forense reconhecida na justiça brasileira.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+                    <div class="p-3 bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 rounded-2xl w-fit">
+                        <i data-lucide="building-2" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Delegacia de Crimes Cibernéticos</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Casos graves como ameaças, extorsão, vazamento de fotos íntimas ou racismo devem ser registrados através do boletim de ocorrência eletrônico (B.O.) da Polícia Civil do seu Estado ou presencialmente na delegacia especializada.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 3: COMO AJUDAR ALGUÉM (GUIA DO ALIADO) -->
+        <section id="ajudar" class="searchable scroll-mt-24 space-y-6">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">Módulo 3</span>
+                <h2 class="font-display text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1">
+                    Guia do Aliado: Como Ajudar Quem Sofre
+                </h2>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mt-1">
+                    Se você é amigo, parente ou educador, veja orientações diretas de suporte com foco na preservação emocional.
+                </p>
+            </div>
+
+            <!-- Role Selector Pills -->
+            <div class="flex flex-wrap gap-2">
+                <button onclick="setAllyRole('friend')" id="role-friend" class="role-btn px-4 py-2 rounded-2xl text-xs sm:text-sm font-bold border transition bg-amber-500 text-white border-amber-500">
+                    <i data-lucide="heart" class="w-4 h-4 inline mr-1"></i> Sou Amigo(a)
+                </button>
+                <button onclick="setAllyRole('parent')" id="role-parent" class="role-btn px-4 py-2 rounded-2xl text-xs sm:text-sm font-bold border transition bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-700">
+                    <i data-lucide="home" class="w-4 h-4 inline mr-1"></i> Sou Pai / Mãe / Responsável
+                </button>
+                <button onclick="setAllyRole('educator')" id="role-educator" class="role-btn px-4 py-2 rounded-2xl text-xs sm:text-sm font-bold border transition bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-700">
+                    <i data-lucide="graduation-cap" class="w-4 h-4 inline mr-1"></i> Sou Educador(a) / Escola
+                </button>
+            </div>
+
+            <!-- Dynamic Scripts Panel -->
+            <div id="allyContentPanel" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Rendered dynamically via JS -->
+            </div>
+        </section>
+
+        <!-- CENTRAL DE AJUDA DIRETA & TELEFONES DE EMERGÊNCIA -->
+        <section id="emergencia" class="searchable scroll-mt-24 space-y-6">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-red-600 dark:text-red-400">Suporte 24h & Oficial</span>
+                <h2 class="font-display text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+                    Central de Canais de Emergência
+                </h2>
+                <p class="text-slate-600 dark:text-slate-400 text-sm">
+                    Canais confiáveis e gratuitos para acolhimento psicológico, denúncia anônima e suporte legal imediato.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Card CVV -->
+                <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <div class="w-10 h-10 bg-red-100 dark:bg-red-950/60 text-red-600 rounded-xl flex items-center justify-center font-bold">
+                            <i data-lucide="heart-pulse" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-base">CVV (Apoio Emocional)</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Atendimento gratuito e sigiloso 24 horas para desabafo e prevenção.</p>
+                    </div>
+                    <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                        <a href="tel:188" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-center text-xs font-bold block transition">
+                            Ligar 188
+                        </a>
+                        <button onclick="copyToClipboard('188', 'Número 188 copiado!')" class="w-full py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-xl text-center text-xs font-semibold block transition">
+                            Copiar Número
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card SaferNet -->
+                <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 rounded-xl flex items-center justify-center font-bold">
+                            <i data-lucide="globe" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-base">SaferNet Brasil</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Helpline e Helpline de Denúncias anônimas para crimes virtuais.</p>
+                    </div>
+                    <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                        <a href="https://safernet.org.br" target="_blank" rel="noopener" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-center text-xs font-bold block transition">
+                            Abrir Portal SaferNet
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card Disque 100 -->
+                <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 rounded-xl flex items-center justify-center font-bold">
+                            <i data-lucide="shield" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-base">Disque 100</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Ouvidoria Nacional de Direitos Humanos. Violações contra crianças e jovens.</p>
+                    </div>
+                    <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                        <a href="tel:100" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-center text-xs font-bold block transition">
+                            Ligar Disque 100
+                        </a>
+                        <button onclick="copyToClipboard('100', 'Número Disque 100 copiado!')" class="w-full py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-xl text-center text-xs font-semibold block transition">
+                            Copiar Número
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card Emergência Escolar / Polícia -->
+                <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <div class="w-10 h-10 bg-amber-100 dark:bg-amber-950/60 text-amber-600 rounded-xl flex items-center justify-center font-bold">
+                            <i data-lucide="siren" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-base">Polícia Militar (190)</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Em situações com risco imediato de agressão física ou invasão.</p>
+                    </div>
+                    <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                        <a href="tel:190" class="w-full py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-center text-xs font-bold block transition">
+                            Ligar 190
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Printable Report View (Hidden from Screen, Visible on Print) -->
+    <div id="printableReport" class="print-only p-8 space-y-6">
+        <div class="border-b-2 border-slate-900 pb-4 text-center">
+            <h1 class="text-2xl font-bold uppercase tracking-wide">Relatório Oficial de Incidentes - Dossiê de Provas</h1>
+            <p class="text-xs text-slate-600 mt-1">Gerado via Portal Viver Seguro | Documento de Apoio para Notificação ou B.O.</p>
+            <p id="printTimestamp" class="text-xs font-mono text-slate-500 mt-1"></p>
+        </div>
+
+        <div class="space-y-2">
+            <h2 class="font-bold text-base border-b border-slate-300 pb-1">1. Lista de Incidentes Registrados</h2>
+            <table class="w-full text-xs text-left border-collapse border border-slate-300">
+                <thead>
+                    <tr class="bg-slate-100">
+                        <th class="border border-slate-300 p-2">Plataforma</th>
+                        <th class="border border-slate-300 p-2">Data e Hora</th>
+                        <th class="border border-slate-300 p-2">Perfil / Usuario</th>
+                        <th class="border border-slate-300 p-2">Tipo Prova</th>
+                        <th class="border border-slate-300 p-2">Descrição do Ocorrido</th>
+                    </tr>
+                </thead>
+                <tbody id="printTableBody">
+                    <!-- JavaScript Populates -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="space-y-2 pt-4">
+            <h2 class="font-bold text-base border-b border-slate-300 pb-1">2. Termo de Preservação de Evidências</h2>
+            <p class="text-xs text-slate-700 leading-relaxed">
+                Atesto que as informações registradas acima correspondem a arquivos de capturas de tela e dados armazenados no dispositivo no momento de cada ocorrência. Recomenda-se a preservação dos arquivos originais em meio digital para posterior perícia.
+            </p>
+        </div>
+
+        <div class="pt-12 grid grid-cols-2 gap-8 text-center text-xs">
+            <div>
+                <div class="border-t border-slate-400 pt-1 font-semibold">Assinatura do Noticiante / Responsável</div>
+            </div>
+            <div>
+                <div class="border-t border-slate-400 pt-1 font-semibold">Data do Protocolo</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2 text-xs sm:text-sm pointer-events-none no-print">
+        <i data-lucide="info" class="w-4 h-4 text-brand-400"></i>
+        <span id="toastMsg">Mensagem...</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-8 no-print transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+            <div class="flex items-center justify-center gap-2 text-brand-600 dark:text-brand-400 font-display font-bold text-lg">
+                <i data-lucide="shield-check" class="w-5 h-5"></i>
+                <span>Portal Viver Seguro</span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 max-w-xl mx-auto">
+                Este portal tem caráter estritamente educativo e instrucional. Em situações de perigo físico iminente, entre em contato imediatamente com as autoridades através do 190.
+            </p>
+            <p class="text-[11px] text-slate-400 dark:text-slate-500">
+                © 2026 Portal Viver Seguro. Todos os direitos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        
+        // Font size scale index
+        let currentFontScale = 1; // 0: sm, 1: md, 2: lg, 3: xl
+        const fontClasses = ['font-sm', 'font-md', 'font-lg', 'font-xl'];
+
+        // Evidence Storage Array
+        let evidenceData = [];
+
+        // Initialize App on DOM Load
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            loadEvidenceFromStorage();
+            switchTab('instagram');
+            setAllyRole('friend');
+
+            // Quick Exit shortcut (ESC key)
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    quickExit();
+                }
+            });
+        });
+
+        // Quick Emergency Exit
+        function quickExit() {
+            window.location.replace('https://news.google.com');
+        }
+
+        // Accessibility: Font Resizing
+        function changeFontSize(delta) {
+            document.body.classList.remove(fontClasses[currentFontScale]);
+            currentFontScale = Math.max(0, Math.min(fontClasses.length - 1, currentFontScale + delta));
+            document.body.classList.add(fontClasses[currentFontScale]);
+        }
+
+        function resetFontSize() {
+            document.body.classList.remove(fontClasses[currentFontScale]);
+            currentFontScale = 1;
+            document.body.classList.add(fontClasses[currentFontScale]);
+        }
+
+        // Accessibility: High Contrast
+        function toggleHighContrast() {
+            document.documentElement.classList.toggle('high-contrast');
+            showToast('Modo de contraste alterado.');
+        }
+
+        // Accessibility: Dark Mode
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            
+            document.getElementById('themeText').innerText = isDark ? 'Escuro' : 'Claro';
+            document.getElementById('themeIcon').setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+            lucide.createIcons();
+            showToast(`Tema ${isDark ? 'Escuro' : 'Claro'} ativado.`);
+        }
+
+        // Toast Notification Function
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.innerText = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Copy Helper
+        function copyToClipboard(text, msg) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(msg || 'Copiado para a área de transferência!');
+            }).catch(() => {
+                // Fallback for copy
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast(msg || 'Copiado para a área de transferência!');
+            });
+        }
+
+        // Live Search Filter
+        function filterContent() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const sections = document.querySelectorAll('.searchable');
+            const countDisplay = document.getElementById('searchResultsCount');
+            let matchedCount = 0;
+
+            if (query === '') {
+                sections.forEach(sec => sec.classList.remove('hidden'));
+                countDisplay.classList.add('hidden');
+                return;
+            }
+
+            sections.forEach(sec => {
+                const text = sec.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    sec.classList.remove('hidden');
+                    matchedCount++;
+                } else {
+                    sec.classList.add('hidden');
+                }
+            });
+
+            countDisplay.classList.remove('hidden');
+            countDisplay.innerText = `Encontradas ${matchedCount} seção(ões) correspondentes a "${query}".`;
+        }
+
+        // Quiz Tool Logic
+        function calculateQuiz() {
+            const q1 = document.querySelector('input[name="q1"]:checked');
+            const q2 = document.querySelector('input[name="q2"]:checked');
+            const q3 = document.querySelector('input[name="q3"]:checked');
+            const q4 = document.querySelector('input[name="q4"]:checked');
+            const q5 = document.querySelector('input[name="q5"]:checked');
+
+            if (!q1 || !q2 || !q3 || !q4 || !q5) {
+                showToast('Por favor, responda a todas as 5 perguntas.');
+                return;
+            }
+
+            const totalScore = parseInt(q1.value) + parseInt(q2.value) + parseInt(q3.value) + parseInt(q4.value) + parseInt(q5.value);
+
+            const resultBox = document.getElementById('quizResult');
+            const resultIconBox = document.getElementById('resultIconBox');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultBadge = document.getElementById('resultBadge');
+            const resultDescription = document.getElementById('resultDescription');
+            const resultActionSteps = document.getElementById('resultActionSteps');
+
+            resultBox.classList.remove('hidden');
+
+            if (totalScore <= 7) {
+                // Low risk
+                resultBox.className = 'mt-6 p-6 rounded-2xl border bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 text-slate-800 dark:text-slate-100';
+                resultIconBox.className = 'p-3 rounded-xl bg-emerald-500 text-white';
+                resultIconBox.innerHTML = `<i data-lucide="shield-check" class="w-6 h-6"></i>`;
+                resultTitle.innerText = 'Nível de Risco: Baixo / Conflito Pontual';
+                resultBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200';
+                resultBadge.innerText = 'Risco Baixo';
+                resultDescription.innerText = 'Situação aparentemente isolada. Pode tratar-se de um desentendimento pontual ou provocation de baixa intensidade.';
+                resultActionSteps.innerHTML = `
+                    <li>Não responda no calor do momento. Esfrie a conversa.</li>
+                    <li>Utilize as opções de silenciar ou restringir o perfil da pessoa.</li>
+                    <li>Guarde um registro prévio caso a atitude se repita futuramente.</li>
+                `;
+            } else if (totalScore <= 11) {
+                // Moderate risk
+                resultBox.className = 'mt-6 p-6 rounded-2xl border bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800 text-slate-800 dark:text-slate-100';
+                resultIconBox.className = 'p-3 rounded-xl bg-amber-500 text-white';
+                resultIconBox.innerHTML = `<i data-lucide="alert-triangle" class="w-6 h-6"></i>`;
+                resultTitle.innerText = 'Nível de Risco: Moderado (Atenção Elevada)';
+                resultBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200';
+                resultBadge.innerText = 'Risco Moderado';
+                resultDescription.innerText = 'Há indícios claros de assédio repetitivo ou perturbação da tranquilidade. Exige ação preventiva imediata.';
+                resultActionSteps.innerHTML = `
+                    <li><strong>Não apague as mensagens:</strong> Tire capturas de tela (prints) com data e nome de usuário.</li>
+                    <li>Bloqueie o agressor e reporte a conta dentro da plataforma (Instagram/WhatsApp/etc).</li>
+                    <li>Cadastre as ocorrências na nossa ferramenta de <strong>Dossiê de Provas</strong> abaixo.</li>
+                    <li>Converse com um responsável, professor de confiança ou amigo próximo.</li>
+                `;
+            } else {
+                // Critical risk
+                resultBox.className = 'mt-6 p-6 rounded-2xl border bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800 text-slate-800 dark:text-slate-100';
+                resultIconBox.className = 'p-3 rounded-xl bg-red-600 text-white';
+                resultIconBox.innerHTML = `<i data-lucide="siren" class="w-6 h-6"></i>`;
+                resultTitle.innerText = 'Nível de Risco: Crítico / Cyberbullying Grave';
+                resultBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200';
+                resultBadge.innerText = 'Risco Crítico';
+                resultDescription.innerText = 'Situação grave com potencial ilícito (ameaças, vazamento de fotos, extorsão ou danos profundos à saúde mental).';
+                resultActionSteps.innerHTML = `
+                    <li><strong>Preserve todas as evidências:</strong> Registre tudo no Dossiê de Provas imediatamente.</li>
+                    <li>Considere gerar uma Ata Notarial ou relatório impresso para apresentação na Polícia Civil ou Direção Escolar.</li>
+                    <li>Se houver ameaça física ou extorsão, acione o <strong>Disque 100</strong> ou a Polícia (190).</li>
+                    <li>Se estiver sentindo angústia intensa, ligue gratuitamente para o <strong>CVV (188)</strong> para acolhimento humano imediato.</li>
+                `;
+            }
+
+            lucide.createIcons();
+            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function resetQuiz() {
+            const radios = document.querySelectorAll('#quizForm input[type="radio"]');
+            radios.forEach(r => r.checked = false);
+            document.getElementById('quizResult').classList.add('hidden');
+            showToast('Autoteste reiniciado.');
+        }
+
+        // Evidence Manager (Local Storage)
+        function loadEvidenceFromStorage() {
+            const saved = localStorage.getItem('viver_seguro_evidence');
+            if (saved) {
+                try {
+                    evidenceData = JSON.parse(saved);
+                } catch (e) {
+                    evidenceData = [];
+                }
+            }
+            renderEvidenceList();
+        }
+
+        function saveEvidenceToStorage() {
+            localStorage.setItem('viver_seguro_evidence', JSON.stringify(evidenceData));
+            renderEvidenceList();
+        }
+
+        function addEvidence(event) {
+            event.preventDefault();
+            const platform = document.getElementById('evPlatform').value;
+            const dateTime = document.getElementById('evDateTime').value;
+            const account = document.getElementById('evAccount').value;
+            const type = document.getElementById('evType').value || 'Não informado';
+            const description = document.getElementById('evDescription').value;
+
+            const newItem = {
+                id: Date.now(),
+                platform,
+                dateTime,
+                account,
+                type,
+                description
+            };
+
+            evidenceData.unshift(newItem);
+            saveEvidenceToStorage();
+
+            // Reset form
+            document.getElementById('evidenceForm').reset();
+            showToast('Item registrado com sucesso no Dossiê!');
+        }
+
+        function deleteEvidence(id) {
+            evidenceData = evidenceData.filter(item => item.id !== id);
+            saveEvidenceToStorage();
+            showToast('Registro removido.');
+        }
+
+        function clearAllEvidence() {
+            if (evidenceData.length === 0) return;
+            evidenceData = [];
+            saveEvidenceToStorage();
+            showToast('Todos os registros foram apagados.');
+        }
+
+        function renderEvidenceList() {
+            const container = document.getElementById('evidenceList');
+            const countBadge = document.getElementById('evidenceCount');
+            countBadge.innerText = evidenceData.length;
+
+            if (evidenceData.length === 0) {
+                container.innerHTML = `
+                    <div class="p-6 text-center text-slate-400 dark:text-slate-500 border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl text-xs">
+                        Nenhum registro armazenado ainda. Preencha o formulário acima para salvar provas no seu dispositivo.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = evidenceData.map(item => `
+                <div class="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm">
+                    <div class="space-y-1">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2.5 py-0.5 bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold rounded-md">${item.platform}</span>
+                            <span class="text-slate-500 dark:text-slate-400 font-mono text-[11px]">${formatDateTime(item.dateTime)}</span>
+                            <span class="text-slate-600 dark:text-slate-300 font-semibold">@${item.account}</span>
+                        </div>
+                        <p class="text-slate-700 dark:text-slate-200 font-medium">${item.description}</p>
+                        <span class="text-[11px] text-slate-400 block">Tipo de Prova: ${item.type}</span>
+                    </div>
+                    <button onclick="deleteEvidence(${item.id})" class="text-red-500 hover:text-red-700 font-semibold text-xs flex items-center gap-1 self-end sm:self-auto px-2 py-1 bg-red-50 dark:bg-red-950/40 rounded-lg border border-red-200/50 dark:border-red-900/50">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Excluir
+                    </button>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function formatDateTime(dtStr) {
+            if (!dtStr) return '';
+            const dt = new Date(dtStr);
+            return dt.toLocaleString('pt-BR');
+        }
+
+        function printEvidenceReport() {
+            if (evidenceData.length === 0) {
+                showToast('Adicione pelo menos um registro antes de imprimir o relatório.');
+                return;
+            }
+
+            document.getElementById('printTimestamp').innerText = `Emissão em: ${new Date().toLocaleString('pt-BR')}`;
+            const tableBody = document.getElementById('printTableBody');
+
+            tableBody.innerHTML = evidenceData.map(item => `
+                <tr>
+                    <td class="border border-slate-300 p-2 font-bold">${item.platform}</td>
+                    <td class="border border-slate-300 p-2 font-mono">${formatDateTime(item.dateTime)}</td>
+                    <td class="border border-slate-300 p-2">${item.account}</td>
+                    <td class="border border-slate-300 p-2">${item.type}</td>
+                    <td class="border border-slate-300 p-2">${item.description}</td>
+                </tr>
+            `).join('');
+
+            window.print();
+        }
+
+        // Checklist progress tracker
+        function updateChecklistProgress() {
+            const checkboxes = document.querySelectorAll('.chk-step');
+            let checkedCount = 0;
+            checkboxes.forEach(chk => { if (chk.checked) checkedCount++; });
+
+            const percentage = Math.round((checkedCount / checkboxes.length) * 100);
+            document.getElementById('chkProgressBar').style.width = `${percentage}%`;
+            document.getElementById('chkProgressText').innerText = `${percentage}% Concluído`;
+        }
+
+        // Platform Tab Switching
+        const platformGuides = {
+            instagram: {
+                title: 'Como Denunciar no Instagram',
+                steps: [
+                    'Para denunciar uma publicação/foto: toque nos 3 pontinhos (...) no canto superior do post > Denunciar > Selecione o motivo (Assédio, Discurso de Ódio ou Bullying).',
+                    'Para denunciar um Perfil Fake: vá ao perfil > toque nos 3 pontinhos (...) > Denunciar > "Esta conta está se passando por outra pessoa".',
+                    'Nas mensagens diretas (DM): mantenha a mensagem pressionada e toque em "Denunciar".'
+                ],
+                link: 'https://help.instagram.com'
+            },
+            whatsapp: {
+                title: 'Como Denunciar no WhatsApp',
+                steps: [
+                    'Abra a conversa com o infror > toque no nome do contato no topo > role até o final e toque em "Denunciar Contato".',
+                    'Marque a opção "Denunciar e Bloquear". O WhatsApp receberá as últimas 5 mensagens dessa conversa para análise legal.',
+                    'Dica crucial: antes de denunciar, exporte o histórico de conversa com mídia (Menu > Mais > Exportar conversa).'
+                ],
+                link: 'https://www.whatsapp.com/safety'
+            },
+            tiktok: {
+                title: 'Como Denunciar no TikTok',
+                steps: [
+                    'Em um vídeo ofensivo: pressione o vídeo ou toque na seta de Compartilhar > Denunciar.',
+                    'Em um comentário maldoso: mantenha o comentário pressionado > Denunciar > Selecione Bullying ou Assédio.',
+                    'Em uma conta fake: vá ao perfil > toque na seta no topo superior direito > Denunciar.'
+                ],
+                link: 'https://www.tiktok.com/safety/pt-br/'
+            },
+            discord: {
+                title: 'Como Denunciar no Discord / Jogos Online',
+                steps: [
+                    'No Discord: Ative o "Modo Desenvolvedor" nas configurações de aparência para poder copiar o ID do Usuário e ID das Mensagens.',
+                    'Clique com o botão direito sobre a mensagem ofensiva > Reportar Mensagem.',
+                    'Em jogos como Roblox ou Fortnite: use o menu de pausa do jogo > Denunciar Jogador Abusivo > envie a categoria "Comportamento Inadequado/Abuso".'
+                ],
+                link: 'https://dis.gd/report'
+            },
+            twitter: {
+                title: 'Como Denunciar no X (Twitter)',
+                steps: [
+                    'No post ofensivo: toque nos 3 pontinhos (...) no canto do post > Denunciar post.',
+                    'Escolha a categoria "Assédio" ou "Conteúdo de Ódio".',
+                    'Marque se o ataque é direcionado a você ou a outra pessoa.'
+                ],
+                link: 'https://help.twitter.com'
+            }
+        };
+
+        function switchTab(platformKey) {
+            const btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(b => {
+                b.className = 'tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300';
+            });
+
+            const activeBtn = document.getElementById(`tab-${platformKey}`);
+            if (activeBtn) {
+                activeBtn.className = 'tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-brand-600 text-white';
+            }
+
+            const guide = platformGuides[platformKey];
+            const container = document.getElementById('tabContent');
+
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <h4 class="font-bold text-slate-900 dark:text-white text-base">${guide.title}</h4>
+                    <ol class="space-y-2 list-decimal list-inside text-slate-700 dark:text-slate-300 leading-relaxed">
+                        ${guide.steps.map(step => `<li class="p-2 bg-slate-50 dark:bg-slate-800/40 rounded-lg border border-slate-100 dark:border-slate-800">${step}</li>`).join('')}
+                    </ol>
+                    <a href="${guide.link}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs text-brand-600 dark:text-brand-400 font-bold hover:underline pt-2">
+                        <span>Acessar Central Oficial de Segurança de ${guide.title.replace('Como Denunciar no ', '')}</span>
+                        <i data-lucide="external-link" class="w-3 h-3"></i>
+                    </a>
+                </div>
+            `;
+
+            lucide.createIcons();
+        }
+
+        // Ally Playbook Role Switcher
+        const allyData = {
+            friend: {
+                doSayTitle: 'O que DIZER ao seu amigo(a):',
+                doSay: [
+                    '"Eu estou aqui com você. Isso não é culpa sua e você não precisa passar por isso sozinho."',
+                    '"Vamos guardar os prints juntos e depois fechar o celular para fazer algo divertido."',
+                    '"Se você quiser, eu vou junto com você conversar com um adulto ou com a direção da escola."'
+                ],
+                dontSayTitle: 'O que NUNCA dizer:',
+                dontSay: [
+                    '"Ah, é só desligar a internet ou deletar a conta que passa."',
+                    '"Nossa, mas por que você postou aquilo também?" (Evite culpabilizar a vítima)',
+                    '"Esquece isso, é só palhaçada da turma."'
+                ]
+            },
+            parent: {
+                doSayTitle: 'O que DIZER ao seu filho(a):',
+                doSay: [
+                    '"Obrigado por confiar em mim para me contar. Você não está encrencado(a) e eu vou te proteger."',
+                    '"Nós vamos resolver isso passo a passo, sem tomar atitudes impulsivas."',
+                    '"O seu bem-estar é o que mais importa. Vamos cuidar de você primeiro."'
+                ],
+                dontSayTitle: 'O que NUNCA dizer:',
+                dontSay: [
+                    '"Vou tirar o seu celular de você agora mesmo!" (Isso faz o jovem esconder futuros ataques por medo de punição).',
+                    '"No meu tempo a gente resolvia isso na saída da escola."',
+                    '"Você passa o dia todo nessa internet, procurou isso."'
+                ]
+            },
+            educator: {
+                doSayTitle: 'Ações recomendadas na Escola:',
+                doSay: [
+                    'Acolha o estudante em sala reservada, ouvindo com escuta ativa e sem julgamento.',
+                    'Acione o protocolo antibullying da instituição sem expor publicamente a vítima.',
+                    'Promova oficinas preventivas em sala de aula sobre cidadania e empatia digital.'
+                ],
+                dontSayTitle: 'Posturas a EVITAR:',
+                dontSay: [
+                    'Forçar vítima e agressor a darem as mãos e se abraçarem na hora (pode gerar revitimização).',
+                    'Tratar o caso como "brincadeira normal de adolescente".',
+                    'Ignorar episódios ocorridos fora do horário escolar que repercutem na convivência da turma.'
+                ]
+            }
+        };
+
+        function setAllyRole(roleKey) {
+            const btns = document.querySelectorAll('.role-btn');
+            btns.forEach(b => {
+                b.className = 'role-btn px-4 py-2 rounded-2xl text-xs sm:text-sm font-bold border transition bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-700';
+            });
+
+            const activeBtn = document.getElementById(`role-${roleKey}`);
+            if (activeBtn) {
+                activeBtn.className = 'role-btn px-4 py-2 rounded-2xl text-xs sm:text-sm font-bold border transition bg-amber-500 text-white border-amber-500 shadow-sm';
+            }
+
+            const data = allyData[roleKey];
+            const panel = document.getElementById('allyContentPanel');
+
+            panel.innerHTML = `
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-emerald-200 dark:border-emerald-900/60 shadow-sm space-y-3">
+                    <h3 class="font-display font-bold text-emerald-700 dark:text-emerald-400 text-base flex items-center gap-2">
+                        <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                        ${data.doSayTitle}
+                    </h3>
+                    <ul class="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                        ${data.doSay.map(item => `<li class="p-3 bg-emerald-50/60 dark:bg-emerald-950/30 rounded-xl border border-emerald-100 dark:border-emerald-900/40">${item}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-rose-200 dark:border-rose-900/60 shadow-sm space-y-3">
+                    <h3 class="font-display font-bold text-rose-700 dark:text-rose-400 text-base flex items-center gap-2">
+                        <i data-lucide="x-circle" class="w-5 h-5"></i>
+                        ${data.dontSayTitle}
+                    </h3>
+                    <ul class="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                        ${data.dontSay.map(item => `<li class="p-3 bg-rose-50/60 dark:bg-rose-950/30 rounded-xl border border-rose-100 dark:border-rose-900/40">${item}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
